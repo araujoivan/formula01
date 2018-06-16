@@ -71,42 +71,32 @@ public class InterfaceUsuario {
                     .findFirst().isPresent();
     }
     
+
     public void trataOpcao(String opcao) {
-    
-        if(Menu.C.name().equalsIgnoreCase(opcao)) {
-            
-            temporada.ordenaPilotoPorVitoria();
-            temporada.exibePilotos();
-            
-        } else if(Menu.E.name().equalsIgnoreCase(opcao)) {
-              
-            Scanner scanner = new Scanner(System.in);
-            
-            System.out.print("Nome:");
-            
-            String nome = scanner.nextLine();
-
-            Piloto piloto = temporada.buscaPiloto(nome);
-
-            if(piloto == null) {
-                System.out.println("Piloto não encontrado!");
-            } else {
-                System.out.println(piloto);
-            }
-                          
-        } else if(Menu.M.name().equalsIgnoreCase(opcao)) {
-            
-            System.out.println("Existem ".concat(String.valueOf(temporada.pilotosAcimaMedia())).concat("% de pilotos acima da média"));
-            
-        } else if(Menu.P.name().equalsIgnoreCase(opcao)) {
-            Piloto piloto = temporada.pilotoMaiorPontuacao();
-            
-            if(piloto != null) {
-                System.out.println("Piloto com maior pontuação é o ".concat(piloto.toString()));
-            } 
-         } else if(Menu.N.name().equalsIgnoreCase(opcao)) {
-             criaPiloto();
-         }      
+        
+        Menu menu = Menu.valueOf(opcao.toUpperCase());
+        
+        switch(menu) {
+            case C:
+                temporada.ordenaPilotoPorVitoria();
+                temporada.exibePilotos();
+            break;
+            case M:
+                System.out.println("Existem ".concat(String.valueOf(temporada.pilotosAcimaMedia())).concat("% de pilotos acima da média"));
+            break;
+            case N:
+                criaPiloto();
+            break;
+            case P:
+                Piloto piloto = temporada.pilotoMaiorPontuacao();
+                System.out.println(piloto != null ? "Piloto com maior pontuação é o ".concat(piloto.toString()) : "Nnao há pilotos cadastrados.");
+            break;
+            case E:
+                String nome = leEntrada("","Nome:");
+                Piloto p = temporada.buscaPiloto(nome);
+                System.out.println(p == null ? "Piloto não encontrado!" : p);
+            break;
+        }     
     }
     
     public void iniciaLeitura() {
